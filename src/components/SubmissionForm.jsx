@@ -5,22 +5,39 @@ import FormTab from "./FormTab";
 const expenseCategories = ["Education", "Food", "Health", "Bill", "Insurance", "Tax", "Transport", "Telephone"];
 const incomeCategories = ["Salary", "Outsourcing", "Bond", "Dividend"];
 
-const SubmissionForm = ({ expenses, incomes, setExpenses, setIncomes }) => {
+const SubmissionForm = ({
+    financialStats,
+    expenses,
+    incomes,
+    setFinancialStats,
+    setExpenses,
+    setIncomes
+}) => {
     const [activeTab, setActiveTab] = useState("Expense");
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const record = {
-            id: Date.now().toString(),
+            id: Math.random().toString(36).substring(2, 9),
             category: e.target.category.value,
             amount: Number(e.target.amount.value),
             date: e.target.date.value
         };
 
         if (activeTab === "Expense") {
+            setFinancialStats({
+                ...financialStats,
+                balance: financialStats.balance - record.amount,
+                totalExpense: financialStats.totalExpense + record.amount
+            });
             setExpenses([...expenses, record]);
         } else {
+            setFinancialStats({
+                ...financialStats,
+                balance: financialStats.balance + record.amount,
+                totalIncome: financialStats.totalIncome + record.amount
+            })
             setIncomes([...incomes, record]);
         };
     };
