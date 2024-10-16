@@ -12,6 +12,7 @@ const SubmissionForm = ({ expenses, incomes, setExpenses, setIncomes }) => {
         e.preventDefault();
 
         const record = {
+            id: Date.now().toString(),
             category: e.target.category.value,
             amount: Number(e.target.amount.value),
             date: e.target.date.value

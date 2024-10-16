@@ -1,9 +1,10 @@
 import { useState } from "react";
 import SubmissionForm from "../components/SubmissionForm";
+import ExpenseStats from "./ExpenseStats";
 
 const Dashboard = () => {
-    const [expenses, setExpenses] = useState([]);
     const [incomes, setIncomes] = useState([]);
+    const [expenses, setExpenses] = useState([]);
 
     return (
         <main className="relative mx-auto mt-10 w-full max-w-7xl">
@@ -13,6 +14,10 @@ const Dashboard = () => {
                     incomes={incomes}
                     setExpenses={setExpenses}
                     setIncomes={setIncomes}
+                />
+                <ExpenseStats
+                    incomes={incomes}
+                    expenses={expenses}
                 />
             </section>
         </main>
