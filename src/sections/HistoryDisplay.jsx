@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Record from "../components/Record";
 
-const HistoryDisplay = ({ children, title, records = [], updaterFn, financialStats, setFinancialStats }) => {
+const HistoryDisplay = ({ children, title, records = [], updaterFn, financialStats, setFinancialStats, setDefaltFormData, setActiveTab }) => {
     return (
         <div className="border rounded-md relative">
             {/* Header */}
@@ -168,6 +168,8 @@ const HistoryDisplay = ({ children, title, records = [], updaterFn, financialSta
                             updaterFn={updaterFn}
                             financialStats={financialStats}
                             setFinancialStats={setFinancialStats}
+                            setDefaltFormData={setDefaltFormData}
+                            setActiveTab={setActiveTab}
                         />
                     ))
                 }

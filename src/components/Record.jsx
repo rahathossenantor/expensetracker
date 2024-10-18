@@ -8,11 +8,20 @@ const getMonthName = (month) => {
     return date.toLocaleString("en-US", { month: "long" });
 };
 
-const Record = ({ tab, records, record, updaterFn, financialStats, setFinancialStats }) => {
+const Record = ({ tab, records, record, updaterFn, financialStats, setFinancialStats, setDefaltFormData, setActiveTab }) => {
     const { id, category, amount, date: dateString } = record;
 
     const date = new Date(dateString);
     const formattedDate = `${date.getDate()} ${getMonthName(date.getMonth())}, ${date.getFullYear()}`;
+
+    const handleUpdate = () => {
+        setActiveTab(tab);
+        setDefaltFormData((prevState) => ({
+            ...prevState,
+            ...record,
+            updatable: true
+        }));
+    };
 
     const handleRecordDelete = (id) => {
         Swal.fire({
@@ -72,6 +81,7 @@ const Record = ({ tab, records, record, updaterFn, financialStats, setFinancialS
                         className="hover:text-teal-600"
                         role="button"
                         title="Edit Button"
+                        onClick={handleUpdate}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

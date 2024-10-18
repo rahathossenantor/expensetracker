@@ -40,17 +40,22 @@ const Dashboard = () => {
 
     const totalIncome = incomes.reduce((acc, curr) => acc + curr.amount, 0);
     const totalExpense = expenses.reduce((acc, curr) => acc + curr.amount, 0);
-
     const [financialStats, setFinancialStats] = useState({
         balance: totalIncome,
         totalIncome,
         totalExpense
     });
 
+    const [activeTab, setActiveTab] = useState("Expense");
+    const [defaltFormData, setDefaltFormData] = useState({});
+
     return (
         <main className="relative mx-auto mt-10 w-full max-w-7xl">
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <SubmissionForm
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    defaltFormData={defaltFormData}
                     financialStats={financialStats}
                     incomes={incomes}
                     expenses={expenses}
@@ -62,6 +67,8 @@ const Dashboard = () => {
                     financialStats={financialStats}
                     incomes={incomes}
                     expenses={expenses}
+                    setActiveTab={setActiveTab}
+                    setDefaltFormData={setDefaltFormData}
                     setFinancialStats={setFinancialStats}
                     setIncomes={setIncomes}
                     setExpenses={setExpenses}

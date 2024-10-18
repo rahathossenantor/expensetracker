@@ -1,29 +1,74 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import FormTab from "./FormTab";
 
 const expenseCategories = ["Education", "Food", "Health", "Bill", "Insurance", "Tax", "Transport", "Telephone"];
 const incomeCategories = ["Salary", "Outsourcing", "Bond", "Dividend"];
 
 const SubmissionForm = ({
+    activeTab,
+    defaltFormData,
     financialStats,
     expenses,
     incomes,
+    setActiveTab,
     setFinancialStats,
     setExpenses,
     setIncomes
 }) => {
-    const [activeTab, setActiveTab] = useState("Expense");
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const record = {
-            id: Math.random().toString(36).substring(2, 9),
+            id: defaltFormData.id || Math.random().toString(36).substring(2, 9),
             category: e.target.category.value,
             amount: Number(e.target.amount.value),
             date: e.target.date.value
         };
+
+        if (defaltFormData.updatable) {
+            if (activeTab === "Expense") {
+                const updatedExpenses = expenses.map(expense =>
+                    expense.id === defaltFormData.id ? record : expense
+                );
+                setExpenses(updatedExpenses);
+
+                const updatedTotalExpense = updatedExpenses.reduce((acc, curr) => acc + curr.amount, 0);
+                const targetedExpense = expenses.find(expense => expense.id === defaltFormData.id);
+                const updatedBalance = Math.abs(record.amount - targetedExpense.amount);
+
+                let isAddition = true;
+                if (targetedExpense.amount > record.amount) {
+                    isAddition = false;
+                };
+
+                setFinancialStats((prevState) => ({
+                    ...prevState,
+                    balance: (isAddition ? prevState.balance + updatedBalance : prevState.balance - updatedBalance),
+                    totalExpense: updatedTotalExpense
+                }));
+            } else {
+                const updatedIncomes = incomes.map(income =>
+                    income.id === defaltFormData.id ? record : income
+                );
+                setIncomes(updatedIncomes);
+
+                const updatedTotalIncome = updatedIncomes.reduce((acc, curr) => acc + curr.amount, 0);
+                const targetedIncome = incomes.find(income => income.id === defaltFormData.id);
+                const updatedBalance = Math.abs(record.amount - targetedIncome.amount);
+
+                let isAddition = true;
+                if (targetedIncome.amount > record.amount) {
+                    isAddition = false;
+                };
+
+                setFinancialStats((prevState) => ({
+                    ...prevState,
+                    balance: (isAddition ? prevState.balance + updatedBalance : prevState.balance - updatedBalance),
+                    totalIncome: updatedTotalIncome
+                }));
+            };
+            return;
+        }
 
         if (activeTab === "Expense") {
             setFinancialStats({
@@ -64,6 +109,7 @@ const SubmissionForm = ({
                             id="category"
                             name="category"
                             autoComplete="category-name"
+                            defaultValue={defaltFormData.category}
                             className="block w-full rounded-md border-0 pl-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                         >
                             {
@@ -87,6 +133,7 @@ const SubmissionForm = ({
                             id="amount"
                             autoComplete="off"
                             placeholder={12931}
+                            defaultValue={defaltFormData.amount}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                         />
                     </div>
@@ -104,6 +151,7 @@ const SubmissionForm = ({
                             name="date"
                             id="date"
                             autoComplete="off"
+                            defaultValue={defaltFormData.date}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                         />
                     </div>
