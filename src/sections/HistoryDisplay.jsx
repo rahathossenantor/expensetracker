@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Record from "../components/Record";
 
-const HistoryDisplay = ({ children, title, records = [] }) => {
+const HistoryDisplay = ({ children, title, records = [], updaterFn, financialStats, setFinancialStats }) => {
     return (
         <div className="border rounded-md relative">
             {/* Header */}
@@ -162,9 +162,12 @@ const HistoryDisplay = ({ children, title, records = [] }) => {
                     records.map(record => (
                         <Record
                             key={record.id}
-                            category={record.category}
-                            amount={record.amount}
-                            dateString={record.date}
+                            tab={title}
+                            records={records}
+                            record={record}
+                            updaterFn={updaterFn}
+                            financialStats={financialStats}
+                            setFinancialStats={setFinancialStats}
                         />
                     ))
                 }

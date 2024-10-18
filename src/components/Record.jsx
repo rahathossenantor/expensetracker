@@ -1,14 +1,58 @@
 /* eslint-disable react/prop-types */
 
+import Swal from "sweetalert2";
+
 const getMonthName = (month) => {
     const date = new Date();
     date.setMonth(month);
     return date.toLocaleString("en-US", { month: "long" });
 };
 
-const Record = ({ category, amount, dateString }) => {
+const Record = ({ tab, records, record, updaterFn, financialStats, setFinancialStats }) => {
+    const { id, category, amount, date: dateString } = record;
+
     const date = new Date(dateString);
     const formattedDate = `${date.getDate()} ${getMonthName(date.getMonth())}, ${date.getFullYear()}`;
+
+    const handleRecordDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((userRes) => {
+            if (userRes.isConfirmed) {
+                const updatedRecords = records.filter(rd => rd.id !== id);
+                updaterFn(updatedRecords);
+
+                if (tab === "Income") {
+                    const updatedIncome = updatedRecords.reduce((acc, curr) => acc + curr.amount, 0);
+                    setFinancialStats({
+                        ...financialStats,
+                        balance: updatedIncome,
+                        totalIncome: updatedIncome
+                    });
+                } else {
+                    const updatedExpense = updatedRecords.reduce((acc, curr) => acc + curr.amount, 0);
+                    setFinancialStats((prevState) => ({
+                        ...prevState,
+                        balance: prevState.balance + amount,
+                        totalExpense: updatedExpense
+                    }));
+                };
+
+                Swal.fire({
+                    title: "Deleted!",
+                    text: `Record has been deleted.`,
+                    icon: "success",
+                    timer: 2000
+                });
+            }
+        });
+    };
 
     return (
         <div className="flex justify-between items-center py-2 relative group cursor-pointer">
@@ -49,6 +93,7 @@ const Record = ({ category, amount, dateString }) => {
                         className="hover:text-red-600"
                         role="button"
                         title="Delete"
+                        onClick={() => handleRecordDelete(id)}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
