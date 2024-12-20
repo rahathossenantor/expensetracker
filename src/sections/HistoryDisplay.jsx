@@ -1,7 +1,22 @@
 /* eslint-disable react/prop-types */
 import Record from "../components/Record";
 
-const HistoryDisplay = ({ children, title, records = [], updaterFn, financialStats, setFinancialStats, setDefaltFormData, setActiveTab }) => {
+const HistoryDisplay = ({
+    children,
+    title,
+    records = [],
+    updaterFn,
+    financialStats,
+    setFinancialStats,
+    setDefaltFormData,
+    setActiveTab,
+    isSorterOpen,
+    isFilterOpen,
+    setIsSorterOpen,
+    setIsFilterOpen,
+    sorterRef,
+    filterRef
+}) => {
     return (
         <div className="border rounded-md relative">
             {/* Header */}
@@ -17,7 +32,7 @@ const HistoryDisplay = ({ children, title, records = [], updaterFn, financialSta
                 {/* Sorting and Filtering Column */}
                 <div>
                     {/* Sorting */}
-                    {/* <div className="relative inline-block text-left mr-1">
+                    <div className="relative inline-block text-left mr-1">
                         <div>
                             <button
                                 type="button"
@@ -25,6 +40,7 @@ const HistoryDisplay = ({ children, title, records = [], updaterFn, financialSta
                                 id="menu-button"
                                 aria-expanded="true"
                                 aria-haspopup="true"
+                                onClick={() => setIsSorterOpen(prevState => !prevState)}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -47,37 +63,42 @@ const HistoryDisplay = ({ children, title, records = [], updaterFn, financialSta
                                 </svg>
                             </button>
                         </div>
-                        <div
-                            className="absolute z-10 mt-2 left-5 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby="menu-button"
-                            tabIndex={-1}
-                        >
-                            <div className="py-1" role="none">
-                                <a
-                                    href="#"
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
-                                    role="menuitem"
+                        {
+                            isSorterOpen && (
+                                <div
+                                    ref={sorterRef}
+                                    className="absolute z-10 mt-2 left-5 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="menu-button"
                                     tabIndex={-1}
-                                    id="menu-item-0"
                                 >
-                                    Low to High
-                                </a>
-                                <a
-                                    href="#"
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
-                                    role="menuitem"
-                                    tabIndex={-1}
-                                    id="menu-item-0"
-                                >
-                                    High to Low
-                                </a>
-                            </div>
-                        </div>
-                    </div> */}
+                                    <div className="py-1" role="none">
+                                        <a
+                                            href="#"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+                                            role="menuitem"
+                                            tabIndex={-1}
+                                            id="menu-item-0"
+                                        >
+                                            Low to High
+                                        </a>
+                                        <a
+                                            href="#"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+                                            role="menuitem"
+                                            tabIndex={-1}
+                                            id="menu-item-0"
+                                        >
+                                            High to Low
+                                        </a>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
                     {/* Filtering */}
-                    {/* <div className="relative inline-block text-left">
+                    <div className="relative inline-block text-left">
                         <div>
                             <button
                                 type="button"
@@ -85,6 +106,7 @@ const HistoryDisplay = ({ children, title, records = [], updaterFn, financialSta
                                 id="filter-button"
                                 aria-expanded="true"
                                 aria-haspopup="true"
+                                onClick={() => setIsFilterOpen(prevState => !prevState)}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -111,50 +133,55 @@ const HistoryDisplay = ({ children, title, records = [], updaterFn, financialSta
                                 </svg>
                             </button>
                         </div>
-                        <div
-                            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby="filter-button"
-                            tabIndex={-1}
-                            id="filter-dropdown"
-                        >
-                            <div className="py-1" role="none">
-                                <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
-                                    <input
-                                        type="checkbox"
-                                        className="form-checkbox h-4 w-4 rounded-md text-gray-600"
-                                        id="filter-option-1"
-                                    />
-                                    <span className="ml-2">Salary</span>
-                                </label>
-                                <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
-                                    <input
-                                        type="checkbox"
-                                        className="form-checkbox h-4 w-4 rounded-md text-gray-600"
-                                        id="filter-option-2"
-                                    />
-                                    <span className="ml-2">Outsourcing</span>
-                                </label>
-                                <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
-                                    <input
-                                        type="checkbox"
-                                        className="form-checkbox h-4 w-4 rounded-md text-gray-600"
-                                        id="filter-option-3"
-                                    />
-                                    <span className="ml-2">Bond</span>
-                                </label>
-                                <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
-                                    <input
-                                        type="checkbox"
-                                        className="form-checkbox h-4 w-4 rounded-md text-gray-600"
-                                        id="filter-option-3"
-                                    />
-                                    <span className="ml-2">Dividend</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div> */}
+                        {
+                            isFilterOpen && (
+                                <div
+                                    ref={filterRef}
+                                    className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="filter-button"
+                                    tabIndex={-1}
+                                    id="filter-dropdown"
+                                >
+                                    <div className="py-1" role="none">
+                                        <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
+                                            <input
+                                                type="checkbox"
+                                                className="form-checkbox h-4 w-4 rounded-md text-gray-600"
+                                                id="filter-option-1"
+                                            />
+                                            <span className="ml-2">Salary</span>
+                                        </label>
+                                        <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
+                                            <input
+                                                type="checkbox"
+                                                className="form-checkbox h-4 w-4 rounded-md text-gray-600"
+                                                id="filter-option-2"
+                                            />
+                                            <span className="ml-2">Outsourcing</span>
+                                        </label>
+                                        <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
+                                            <input
+                                                type="checkbox"
+                                                className="form-checkbox h-4 w-4 rounded-md text-gray-600"
+                                                id="filter-option-3"
+                                            />
+                                            <span className="ml-2">Bond</span>
+                                        </label>
+                                        <label className="inline-flex items-center px-4 py-2 text-sm text-gray-700">
+                                            <input
+                                                type="checkbox"
+                                                className="form-checkbox h-4 w-4 rounded-md text-gray-600"
+                                                id="filter-option-3"
+                                            />
+                                            <span className="ml-2">Dividend</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
                 </div>
             </div>
             <div className="p-4 divide-y">

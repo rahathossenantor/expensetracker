@@ -4,7 +4,22 @@ import IncomeIcon from "../assets/icons/IncomeIcon";
 import ExpenseSummary from "../components/ExpenseSummary";
 import HistoryDisplay from "./HistoryDisplay";
 
-const ExpenseStats = ({ setActiveTab, financialStats, incomes = [], expenses = [], setIncomes, setExpenses, setFinancialStats, setDefaltFormData }) => {
+const ExpenseStats = ({
+    setActiveTab,
+    financialStats,
+    incomes = [],
+    expenses = [],
+    setIncomes,
+    setExpenses,
+    setFinancialStats,
+    setDefaltFormData,
+    isSorterOpen,
+    isFilterOpen,
+    setIsSorterOpen,
+    setIsFilterOpen,
+    sorterRef,
+    filterRef
+}) => {
     const histories = [
         {
             id: 1,
@@ -37,6 +52,12 @@ const ExpenseStats = ({ setActiveTab, financialStats, incomes = [], expenses = [
                             setFinancialStats={setFinancialStats}
                             setDefaltFormData={setDefaltFormData}
                             setActiveTab={setActiveTab}
+                            isSorterOpen={isSorterOpen}
+                            isFilterOpen={isFilterOpen}
+                            setIsSorterOpen={setIsSorterOpen}
+                            setIsFilterOpen={setIsFilterOpen}
+                            sorterRef={sorterRef}
+                            filterRef={filterRef}
                         >
                             {history.icon}
                         </HistoryDisplay>

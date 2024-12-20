@@ -1,8 +1,16 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import SubmissionForm from "../components/SubmissionForm";
 import ExpenseStats from "./ExpenseStats";
 
-const Dashboard = () => {
+const Dashboard = ({
+    isSorterOpen,
+    isFilterOpen,
+    setIsSorterOpen,
+    setIsFilterOpen,
+    sorterRef,
+    filterRef
+}) => {
     const [incomes, setIncomes] = useState([
         {
             id: Math.random().toString(36).substring(2, 9),
@@ -72,6 +80,12 @@ const Dashboard = () => {
                     setFinancialStats={setFinancialStats}
                     setIncomes={setIncomes}
                     setExpenses={setExpenses}
+                    isSorterOpen={isSorterOpen}
+                    isFilterOpen={isFilterOpen}
+                    setIsSorterOpen={setIsSorterOpen}
+                    setIsFilterOpen={setIsFilterOpen}
+                    sorterRef={sorterRef}
+                    filterRef={filterRef}
                 />
             </section>
         </main>
